@@ -4,7 +4,7 @@
   "States": {
     "faceDetect": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-west-2:585373228373:function:cloud9-faceDetectionSecon-faceDetectionSecondClass-M63NOG6L7UVB",
+      "Resource": "<your faceDetect lambda ARN>",
       "Next": "isFace?"
     },
      "isFace?": {
@@ -31,7 +31,7 @@
               "InputPath":"$",
               "ResultPath": "$.stateOutput",
               "OutputPath":"$.stateOutput",
-              "Resource": "arn:aws:lambda:us-west-2:585373228373:function:cloud9-faceValidationSeco-faceValidationSecondClas-1XHB1I891FFCK",
+              "Resource": "<your faceSearch lambda ARN>",
               "End": true
             }
           }
@@ -44,7 +44,7 @@
               "InputPath":"$",
               "ResultPath": "$.stateOutput",
               "OutputPath":"$.stateOutput",
-              "Resource": "arn:aws:lambda:us-west-2:585373228373:function:cloud9-ppeDetectionSecondC-ppeDetectionSecondClass-AU2FARVTZAOA",
+              "Resource": "<your ppeDetect lambda ARN>",
               "End": true
             }
           }
@@ -54,7 +54,7 @@
     },
     "signinValidate": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-west-2:585373228373:function:cloud9-mergeResultSecondCla-mergeResultSecondClass-12YFSGCMCABPS",
+      "Resource": "<your signinValidate lambda ARN>",
       "Next":"alertNotify"
     },
     
@@ -63,7 +63,7 @@
       "InputPath":"$",
       "ResultPath": "$.stateOutput",
       "OutputPath":"$.stateOutput",
-      "Resource": "arn:aws:lambda:us-west-2:585373228373:function:cloud9-ppeAlertNotify-ppeAlertNotify-1F1FI1YJHQB3B",
+      "Resource": "<your alertNotify lambda ARN>",
       "End": true
     }        
   }
