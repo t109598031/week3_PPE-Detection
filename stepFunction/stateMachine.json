@@ -1,0 +1,70 @@
+{
+  "Comment": "RekognitionLessonV6",
+  "StartAt": "faceDetect",
+  "States": {
+    "faceDetect": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-west-2:585373228373:function:cloud9-faceDetectionSecon-faceDetectionSecondClass-M63NOG6L7UVB",
+      "Next": "isFace?"
+    },
+     "isFace?": {
+        "Type": "Choice",
+        "Choices": [
+          {
+            "Variable": "$.faceDetection.detectionResult.faceCount",
+            "NumericGreaterThan": 0,
+            "Next": "Parallel State"
+          }
+        ]
+      },
+    "Parallel State": {
+      "Type": "Parallel",
+      "InputPath": "$",
+      "OutputPath": "$",
+      "ResultPath":"$.ParallelResultPath",
+      "Branches": [
+        {
+          "StartAt": "faceSearch",
+          "States": {
+            "faceSearch": {
+              "Type": "Task",
+              "InputPath":"$",
+              "ResultPath": "$.stateOutput",
+              "OutputPath":"$.stateOutput",
+              "Resource": "arn:aws:lambda:us-west-2:585373228373:function:cloud9-faceValidationSeco-faceValidationSecondClas-1XHB1I891FFCK",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "ppeDetect",
+          "States": {
+            "ppeDetect": {
+              "Type": "Task",
+              "InputPath":"$",
+              "ResultPath": "$.stateOutput",
+              "OutputPath":"$.stateOutput",
+              "Resource": "arn:aws:lambda:us-west-2:585373228373:function:cloud9-ppeDetectionSecondC-ppeDetectionSecondClass-AU2FARVTZAOA",
+              "End": true
+            }
+          }
+        }
+      ],
+      "Next": "signinValidate"
+    },
+    "signinValidate": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-west-2:585373228373:function:cloud9-mergeResultSecondCla-mergeResultSecondClass-12YFSGCMCABPS",
+      "Next":"alertNotify"
+    },
+    
+    "alertNotify": {
+      "Type": "Task",
+      "InputPath":"$",
+      "ResultPath": "$.stateOutput",
+      "OutputPath":"$.stateOutput",
+      "Resource": "arn:aws:lambda:us-west-2:585373228373:function:cloud9-ppeAlertNotify-ppeAlertNotify-1F1FI1YJHQB3B",
+      "End": true
+    }        
+  }
+}
